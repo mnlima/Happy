@@ -9,8 +9,21 @@ export default {
 
   async index(request: Request, response: Response) {
     const orphanagesRepository = getRepository(Orphanage);
+    const name = request.query.name;
 
     const orphanages = await orphanagesRepository.find({
+      relations: ['images']
+    });
+
+    return response.json(orphanageView.renderMany(orphanages));
+  },
+
+  async getOrphanageByName(request: Request, response: Response) {
+    const orphanagesRepository = getRepository(Orphanage);
+    const name = request.query.name;
+
+    const orphanages = await orphanagesRepository.find({
+      where:{name},
       relations: ['images']
     });
 
@@ -21,6 +34,9 @@ export default {
     const { id } = request.params;
 
     const orphanagesRepository = getRepository(Orphanage);
+
+    orphanagesRepository.find
+
 
     const orphanage = await orphanagesRepository.findOneOrFail(id, {
       relations: ['images']
